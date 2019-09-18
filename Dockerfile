@@ -10,9 +10,11 @@ LABEL maintainer="qwzhou89"
 # Docker Build Arguments
 ARG RESTY_WS_VERSION="0.07"
 ARG RESTY_HC_VERSION="0.11"
+ARG RESTY_HTTP_VERSION="0.14"
 
 LABEL resty_ws_version="${RESTY_WS_VERSION}"
 LABEL resty_hc_version="${RESTY_HC_VERSION}"
+LABEL resty_http_version="${RESTY_HTTP_VERSION}"
 
 # 1) Install apk dependencies
 # 2) Download and untar lua-resty-websocket, PCRE, and OpenResty
@@ -29,13 +31,19 @@ RUN apk add --no-cache --virtual .build-deps \
     && curl -fSL https://github.com/qwzhou89/lua-resty-upstream-healthcheck/archive/v${RESTY_HC_VERSION}.tar.gz -o lua-resty-upstream-healthcheck-${RESTY_HC_VERSION}.tar.gz \
     && tar xzf lua-resty-upstream-healthcheck-${RESTY_HC_VERSION}.tar.gz \
     && cp -r lua-resty-upstream-healthcheck-${RESTY_HC_VERSION}/lib /usr/local/openresty/ \
+    && curl -fSL https://github.com/ledgetech/lua-resty-http/archive/v${RESTY_HTTP_VERSION}.tar.gz -o lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz \
+    && tar xzf lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz \
+    && cp -r lua-resty-http-${RESTY_HTTP_VERSION}/lib /usr/local/openresty/ \
     && rm -rf \
         lua-resty-websocket-${RESTY_WS_VERSION}.tar.gz lua-resty-websocket-${RESTY_WS_VERSION} \
         lua-resty-upstream-healthcheck-${RESTY_HC_VERSION}.tar.gz lua-resty-upstream-healthcheck-${RESTY_HC_VERSION} \
+        lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz lua-resty-http-${RESTY_HTTP_VERSION} \
     && apk del .build-deps
 
 # Copy nginx configuration files
 COPY swtcnode.default.conf /etc/nginx/conf.d/swtcnode.conf
+COPY ws_servers /etc/nginx/conf.d/ws_servers
+COPY wss_servers /etc/nginx/conf.d/wss_servers
 
 # CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
 
