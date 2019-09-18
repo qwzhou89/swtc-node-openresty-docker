@@ -9,7 +9,7 @@ LABEL maintainer="qwzhou89"
 
 # Docker Build Arguments
 ARG RESTY_WS_VERSION="0.07"
-ARG RESTY_HC_VERSION="0.10"
+ARG RESTY_HC_VERSION="0.11"
 
 LABEL resty_ws_version="${RESTY_WS_VERSION}"
 LABEL resty_hc_version="${RESTY_HC_VERSION}"
