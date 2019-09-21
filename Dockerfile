@@ -9,7 +9,7 @@ LABEL maintainer="qwzhou89"
 
 # Docker Build Arguments
 ARG RESTY_WS_VERSION="0.07"
-ARG RESTY_HC_VERSION="0.13"
+ARG RESTY_HC_VERSION="0.14"
 ARG RESTY_HTTP_VERSION="0.14"
 
 LABEL resty_ws_version="${RESTY_WS_VERSION}"
@@ -44,6 +44,8 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY swtcnode.default.conf /etc/nginx/conf.d/swtcnode.conf
 COPY ws_servers /etc/nginx/conf.d/ws_servers
 COPY wss_servers /etc/nginx/conf.d/wss_servers
+COPY fullchain.pem /etc/nginx/conf.d/fullchain.pem
+COPY privkey.pem /etc/nginx/conf.d/privkey.pem
 
 # CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
 
