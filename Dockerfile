@@ -44,9 +44,11 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY swtcnode.default.conf /etc/nginx/conf.d/swtcnode.conf
 COPY ws_servers /etc/nginx/conf.d/ws_servers
 COPY wss_servers /etc/nginx/conf.d/wss_servers
+COPY rpc_servers /etc/nginx/conf.d/rpc_servers
 COPY fullchain.pem /etc/nginx/conf.d/fullchain.pem
 COPY privkey.pem /etc/nginx/conf.d/privkey.pem
 
+EXPOSE 5020 5050 5028
 # CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
 
 # Use SIGQUIT instead of default SIGTERM to cleanly drain requests
