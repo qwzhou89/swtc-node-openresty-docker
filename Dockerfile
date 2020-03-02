@@ -11,10 +11,13 @@ LABEL maintainer="qwzhou89"
 ARG RESTY_WS_VERSION="0.07"
 ARG RESTY_HC_VERSION="0.14"
 ARG RESTY_HTTP_VERSION="0.14"
+ARG LUA_WAF_VERSION="0.7.3"
 
-LABEL resty_ws_version="${RESTY_WS_VERSION}"
-LABEL resty_hc_version="${RESTY_HC_VERSION}"
-LABEL resty_http_version="${RESTY_HTTP_VERSION}"
+LABEL RESTY_WS_VERSION="${RESTY_WS_VERSION}"
+LABEL RESTY_HC_VERSION="${RESTY_HC_VERSION}"
+LABEL RESTY_HTTP_VERSION="${RESTY_HTTP_VERSION}"
+LABEL LUA_WAF_VERSION="${LUA_WAF_VERSION}"
+
 
 # 1) Install apk dependencies
 # 2) Download and untar lua-resty-websocket, PCRE, and OpenResty
@@ -34,10 +37,17 @@ RUN apk add --no-cache --virtual .build-deps \
     && curl -fSL https://github.com/ledgetech/lua-resty-http/archive/v${RESTY_HTTP_VERSION}.tar.gz -o lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz \
     && tar xzf lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz \
     && cp -r lua-resty-http-${RESTY_HTTP_VERSION}/lib /usr/local/openresty/ \
+    && curl -fSL https://github.com/qwzhou89/ngx_lua_waf/archive/v${LUA_WAF_VERSION}.tar.gz -o ngx_lua_waf-${LUA_WAF_VERSION}.tar.gz \
+    && tar xzf ngx_lua_waf-${LUA_WAF_VERSION}.tar.gz \
+    && mkdir -p /usr/local/openresty/ngx_lua_waf \
+    && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/{*.lua,wafconf} /usr/local/openresty/ngx_lua_waf \
+    && sed -i 's@/usr/local/nginx/conf/waf@/usr/local/openresty/ngx_lua_waf@' /usr/local/openresty/ngx_lua_waf/config.lua \
+    && sed -i 's@/usr/local/nginx/logs@/usr/local/openresty/nginx/logs@' /usr/local/openresty/ngx_lua_waf/config.lua \
     && rm -rf \
         lua-resty-websocket-${RESTY_WS_VERSION}.tar.gz lua-resty-websocket-${RESTY_WS_VERSION} \
         lua-resty-upstream-healthcheck-${RESTY_HC_VERSION}.tar.gz lua-resty-upstream-healthcheck-${RESTY_HC_VERSION} \
         lua-resty-http-${RESTY_HTTP_VERSION}.tar.gz lua-resty-http-${RESTY_HTTP_VERSION} \
+        ngx_lua_waf-${LUA_WAF_VERSION}.tar.gz ngx_lua_waf-${LUA_WAF_VERSION} \
     && apk del .build-deps
 
 # Copy nginx configuration files
