@@ -40,6 +40,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && curl -fSL https://github.com/qwzhou89/ngx_lua_waf/archive/v${LUA_WAF_VERSION}.tar.gz -o ngx_lua_waf-${LUA_WAF_VERSION}.tar.gz \
     && tar xzf ngx_lua_waf-${LUA_WAF_VERSION}.tar.gz \
     && mkdir -p /usr/local/openresty/ngx_lua_waf \
+    && mkdir -p /usr/local/openresty/nginx/logs/hack \
+    && chown -R 65534:65534 /usr/local/openresty/nginx/logs/hack \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/*.lua /usr/local/openresty/ngx_lua_waf \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/wafconf /usr/local/openresty/ngx_lua_waf \
     && sed -i 's@/usr/local/nginx/conf/waf@/usr/local/openresty/ngx_lua_waf@' /usr/local/openresty/ngx_lua_waf/config.lua \
