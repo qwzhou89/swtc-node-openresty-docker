@@ -44,11 +44,11 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/wafconf /usr/local/openresty/ngx_lua_waf \
     && sed -i 's@/usr/local/nginx/conf/waf@/usr/local/openresty/ngx_lua_waf@' /usr/local/openresty/ngx_lua_waf/config.lua \
     && sed -i 's@/usr/local/nginx/logs@/usr/local/openresty/nginx/logs@' /usr/local/openresty/ngx_lua_waf/config.lua \
-    && echo 'local process = require "ngx.process"
-local ok, err = process.enable_privileged_agent()
-if not ok then
-    ngx.log(ngx.ERR, "enables privileged agent failed error:", err)
-end
+    && echo 'local process = require "ngx.process"\n\
+local ok, err = process.enable_privileged_agent()\n\
+if not ok then\n\
+    ngx.log(ngx.ERR, "enables privileged agent failed error:", err)\n\
+end\n\
 ' >> /usr/local/openresty/ngx_lua_waf/init.lua \
     && rm -rf \
         lua-resty-websocket-${RESTY_WS_VERSION}.tar.gz lua-resty-websocket-${RESTY_WS_VERSION} \
