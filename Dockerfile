@@ -42,7 +42,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/*.lua ${LUA_WAF_PATH} \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/wafconf ${LUA_WAF_PATH} \
     && sed -i "s@/usr/local/nginx/conf/waf@${LUA_WAF_PATH}@" ${LUA_WAF_PATH}/config.lua \
-    && sed -i 's@/usr/local/nginx/logs@${LUA_WAF_PATH}/logs@' ${LUA_WAF_PATH}/config.lua \
+    && sed -i "s@/usr/local/nginx/logs@${LUA_WAF_PATH}/logs@" ${LUA_WAF_PATH}/config.lua \
     && echo $'\nlocal process = require "ngx.process"\n\
 local ok, err = process.enable_privileged_agent()\n\
 if not ok then\n\
