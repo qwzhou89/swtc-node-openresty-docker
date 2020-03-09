@@ -1,4 +1,0 @@
-    server  c01.jingtum.com:5020;
-    server  c02.jingtum.com:5020;
-    server  c04.jingtum.com:5020;
-    server  c05.jingtum.com:5020;
