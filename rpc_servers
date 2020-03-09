@@ -1,3 +1,5 @@
+    zone upstream_rpc 1m;
+
     server  106.12.78.49:50333;
     server  106.14.154.38:50333;
     server  106.54.88.135:50333;
