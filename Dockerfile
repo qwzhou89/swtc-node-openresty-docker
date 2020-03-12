@@ -42,7 +42,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && chown -R 65534:65534 ${LUA_WAF_PATH}/logs/hack \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/*.lua ${LUA_WAF_PATH} \
     && cp -r ngx_lua_waf-${LUA_WAF_VERSION}/wafconf ${LUA_WAF_PATH} \
-    && sed -i "s@worker_processes  1@worker_processes  3@" ${NGX_CONF_FILE_PATH} \
+    && sed -i "/worker_processes/aworker_shutdown_timeout  5;" ${NGX_CONF_FILE_PATH} \
     && sed -i "s@worker_connections  1024@worker_connections  102400@" ${NGX_CONF_FILE_PATH} \
     && sed -i "s@/usr/local/nginx/conf/waf@${LUA_WAF_PATH}@" ${LUA_WAF_PATH}/config.lua \
     && sed -i "s@/usr/local/nginx/logs@${LUA_WAF_PATH}/logs@" ${LUA_WAF_PATH}/config.lua \
