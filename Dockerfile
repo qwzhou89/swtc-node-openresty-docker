@@ -61,9 +61,8 @@ end\n'\
 # Copy nginx configuration files
 COPY swtcnode.default.conf /etc/nginx/conf.d/swtcnode.conf
 COPY ws_servers /etc/nginx/conf.d/ws_servers
-COPY rpc_servers /etc/nginx/conf.d/rpc_servers
 
-EXPOSE 5020 5050
+EXPOSE 5020
 # CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
 
 # Use SIGQUIT instead of default SIGTERM to cleanly drain requests
